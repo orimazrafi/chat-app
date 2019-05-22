@@ -18,7 +18,8 @@ class App extends Component {
       messages: [],
       currentUser: {},
       joinedRooms: [],
-      joinableRooms: []
+      joinableRooms: [],
+      roomId: ''
     };
   }
 
@@ -33,26 +34,8 @@ class App extends Component {
       .connect()
       .then(currentUser => {
         this.currentUser = currentUser;
-        this.currentUser
-          .getJoinableRooms()
-          .then(joinableRooms => {
-            this.setState({
-              joinableRooms,
-              joinedRooms: this.currentUser.rooms
-            });
-          })
-          .catch(new Error('error on joinable Rooms'));
-        currentUser.subscribeToRoom({
-          roomId: '19864311',
-          // messageLimit: 20,
-          hooks: {
-            onMessage: message => {
-              this.setState({
-                messages: [...this.state.messages, message]
-              });
-            }
-          }
-        });
+        this.getRooms();
+        this.subscribeToRoom();
       })
       .catch(err => {
         console.log('Error on connection', err);
@@ -62,8 +45,42 @@ class App extends Component {
     // console.log('we got the message in app.js');
     this.currentUser.sendMessage({
       text,
-      roomId: '19864311'
+      roomId: this.state.roomId
     });
+  };
+  subscribeToRoom = roomId => {
+    this.setState({ messages: [] });
+    // roomId = roomId.toString();
+    if (roomId) {
+      this.currentUser
+        .subscribeToRoom({
+          roomId,
+          // messageLimit: 20,
+          hooks: {
+            onMessage: message => {
+              this.setState({
+                messages: [...this.state.messages, message]
+              });
+            }
+          }
+        })
+        .then(room => {
+          this.setState({ roomId: room.id });
+          this.getRooms();
+        })
+        .catch(new Error('error on subscribing to room'));
+    }
+  };
+  getRooms = () => {
+    this.currentUser
+      .getJoinableRooms()
+      .then(joinableRooms => {
+        this.setState({
+          joinableRooms,
+          joinedRooms: this.currentUser.rooms
+        });
+      })
+      .catch(new Error('error on joinable Rooms'));
   };
 
   render() {
@@ -73,6 +90,7 @@ class App extends Component {
           <div className='col-4'>
             <div style={{ backgroundColor: '#2295c05e', height: '280px' }}>
               <RoomList
+                subscribeToRoom={this.subscribeToRoom}
                 rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}
               />
             </div>

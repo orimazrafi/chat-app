@@ -3,6 +3,7 @@ import Message from './Message';
 class MessageList extends Component {
   state = {};
   render() {
+    console.log(this.props);
     return (
       <div className='message-list'>
         {this.props.messages.map((message, index) => (
