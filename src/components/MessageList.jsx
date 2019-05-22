@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import Message from './Message';
 class MessageList extends Component {
   state = {};
+  componentDidUpdate = () => {
+    this.scrollToBottom();
+  };
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  };
   render() {
-    console.log(this.props);
     return (
       <div className='message-list'>
         {this.props.messages.map((message, index) => (
@@ -13,6 +18,11 @@ class MessageList extends Component {
             text={message.text}
           />
         ))}
+        <div
+          ref={el => {
+            this.messagesEnd = el;
+          }}
+        />
       </div>
     );
   }

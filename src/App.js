@@ -98,7 +98,13 @@ class App extends Component {
             <NewRoomForm />
           </div>
           <div className='col-8'>
-            <div style={{ backgroundColor: '#a097972e', height: '280px' }}>
+            <div
+              style={{
+                backgroundColor: '#a097972e',
+                height: '280px',
+                overflow: 'auto'
+              }}
+            >
               <MessageList messages={this.state.messages} />
             </div>
             <SendMessageForm sendMessage={this.sendMessage} />
