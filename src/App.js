@@ -90,6 +90,7 @@ class App extends Component {
           <div className='col-4'>
             <div style={{ backgroundColor: '#2295c05e', height: '280px' }}>
               <RoomList
+                roomId={this.state.roomId}
                 subscribeToRoom={this.subscribeToRoom}
                 rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}
               />
