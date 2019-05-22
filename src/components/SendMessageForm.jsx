@@ -9,7 +9,9 @@ class SendMessageForm extends Component {
   };
   submmit = e => {
     e.preventDefault();
-    console.log(this.state.text);
+    this.props.sendMessage(this.state.text);
+    this.setState({ text: '' });
+    // console.log(this.state.text);
   };
   render() {
     return (

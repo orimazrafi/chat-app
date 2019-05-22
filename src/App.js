@@ -8,14 +8,20 @@ import NewRoomForm from './components/NewRoomForm';
 import RoomList from './components/RoomList';
 import SendMessageForm from './components/SendMessageForm';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+// import { threadId } from 'worker_threads';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      messages: []
+      messages: [],
+      currentUser: {},
+      joinedRooms: [],
+      joinableRooms: []
     };
   }
+
   componentDidMount = () => {
     const chatManager = new ChatManager({
       instanceLocator,
@@ -26,6 +32,16 @@ class App extends Component {
     chatManager
       .connect()
       .then(currentUser => {
+        this.currentUser = currentUser;
+        this.currentUser
+          .getJoinableRooms()
+          .then(joinableRooms => {
+            this.setState({
+              joinableRooms,
+              joinedRooms: this.currentUser.rooms
+            });
+          })
+          .catch(new Error('error on joinable Rooms'));
         currentUser.subscribeToRoom({
           roomId: '19864311',
           // messageLimit: 20,
@@ -42,14 +58,33 @@ class App extends Component {
         console.log('Error on connection', err);
       });
   };
+  sendMessage = text => {
+    // console.log('we got the message in app.js');
+    this.currentUser.sendMessage({
+      text,
+      roomId: '19864311'
+    });
+  };
 
   render() {
     return (
-      <div className='App'>
-        <MessageList messages={this.state.messages} />
-        <NewRoomForm />
-        <RoomList />
-        <SendMessageForm />
+      <div className='container'>
+        <div className='row'>
+          <div className='col-4'>
+            <div style={{ backgroundColor: '#2295c05e', height: '280px' }}>
+              <RoomList
+                rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}
+              />
+            </div>
+            <NewRoomForm />
+          </div>
+          <div className='col-8'>
+            <div style={{ backgroundColor: '#a097972e', height: '280px' }}>
+              <MessageList messages={this.state.messages} />
+            </div>
+            <SendMessageForm sendMessage={this.sendMessage} />
+          </div>
+        </div>
       </div>
     );
   }
