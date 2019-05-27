@@ -1,12 +1,17 @@
-import React from 'react';
+// import React from 'react';
+import React, { Component } from 'react';
+// import ReactDom from 'react-dom';
+class Message extends Component {
+  state = {};
 
-const Message = ({ username, text }) => {
-  return (
-    <div className='message'>
-      <div className='message-username'>{username}</div>
-      <div className='message-text'>{text}</div>
-    </div>
-  );
-};
+  render() {
+    return (
+      <div className='message'>
+        <div className='message-username'>{this.props.username}</div>
+        <div className='message-text'>{this.props.text}</div>
+      </div>
+    );
+  }
+}
 
 export default Message;

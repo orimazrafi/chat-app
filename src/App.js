@@ -22,7 +22,16 @@ class App extends Component {
       roomId: ''
     };
   }
-
+  // componentWillUpdate = (nextProps, nextState) => {
+  //   // const node = ReactDom.findDOMNode(this);
+  //   // console.log(node.scrollTop, node.clientHeight, node.scrollHeight);
+  //   const node = ReactDom.findDOMNode(this);
+  //   // this.shouldScrollDown =
+  //   //   node.scrollTop + node.clientHeight + 100 >= node.scrollHeight;
+  //   console.log('scrollTop', node.scrollTop);
+  //   console.log('clientHeight', node.clientHeight);
+  //   console.log('scrollHeight', node.scrollHeight);
+  // };
   componentDidMount = () => {
     const chatManager = new ChatManager({
       instanceLocator,
@@ -82,6 +91,13 @@ class App extends Component {
       })
       .catch(new Error('error on joinable Rooms'));
   };
+  handleRoom = name => {
+    this.currentUser
+      .createRoom({ name })
+      .then(room => this.subscribeToRoom(room.id))
+      .catch(new Error('something wrong with create new room'));
+    // console.log('room', room);
+  };
 
   render() {
     return (
@@ -95,7 +111,7 @@ class App extends Component {
                 rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}
               />
             </div>
-            <NewRoomForm />
+            <NewRoomForm createRoom={this.handleRoom} />
           </div>
           <div className='col-8'>
             <div
