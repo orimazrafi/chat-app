@@ -7,8 +7,10 @@ class Message extends Component {
   render() {
     return (
       <div className='message'>
-        <div className='message-username'>{this.props.username}</div>
-        <div className='message-text'>{this.props.text}</div>
+        <div className='message-username badge badge-light'>
+          {this.props.username}
+        </div>
+        <div className='message-text '>{this.props.text}</div>
       </div>
     );
   }

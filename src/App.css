@@ -1,5 +1,12 @@
 .App {
     text-align: center;
+
+}
+
+h3 {
+    padding: 10px;
+
+    font-family: 'Open Sans', sans-serif;
 }
 
 .App-logo {
@@ -30,9 +37,51 @@
     padding: 0 !important;
     font: inherit;
     /*border is optional*/
-    border-bottom: 1px solid #444;
+    /* border-bottom: 1px solid #444; */
     cursor: pointer;
 }
+
+.rooms-list {
+    display: grid;
+    place-items: center;
+    overflow: auto;
+}
+
+.room {
+    font-family: 'Oswald', sans-serif;
+    padding: 5px;
+}
+
+.join-room-container {
+    display: grid;
+    place-items: center;
+}
+
+.message {
+    padding: 10px;
+}
+
+.message-text {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 550;
+    font-size: 18px;
+}
+
+/* .join-room {
+    margin: auto;
+} */
+.navbar-container {
+
+    margin-bottom: 15px;
+}
+
+.app-headline {
+    font-size: 29px !important;
+    margin: auto !important;
+    color: rgba(71, 45, 45, 0.9) !important;
+}
+
+h1 {}
 
 @keyframes App-logo-spin {
     from {

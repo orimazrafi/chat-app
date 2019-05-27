@@ -9,10 +9,10 @@ class RoomList extends Component {
     const orderRooms = [...this.props.rooms.sort((a, b) => a.id - b.id)];
     return (
       <div className='rooms-list'>
-        <ul>
-          <h3>Your rooms: </h3>
+        <h3>Your rooms: </h3>
+        <div>
           {orderRooms.map(room => (
-            <li key={room.id} className='room'>
+            <div key={room.id} className='room'>
               <button
                 className={this.addClass(room.id)}
                 onClick={() => {
@@ -20,11 +20,11 @@ class RoomList extends Component {
                 }}
                 // href='/'
               >
-                # {room.name}
+                {room.name}
               </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     );
   }

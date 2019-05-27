@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Message from './Message';
 class MessageList extends Component {
   state = {};
-  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
 
   componentDidUpdate = () => {
     this.scrollToBottom();
@@ -12,12 +11,7 @@ class MessageList extends Component {
   };
   render() {
     return (
-      <div
-        className='message-list'
-        // id='message'/
-        // ref={this.myRef}
-        // onScroll={this.scrolled(this)}
-      >
+      <div className='message-list'>
         {this.props.messages.map((message, index) => (
           <Message
             key={index}

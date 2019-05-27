@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import Chatkit from '@pusher/chatkit';
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
-
 import { instanceLocator, testToken } from './config';
 import MessageList from './components/MessageList';
 import NewRoomForm from './components/NewRoomForm';
@@ -9,7 +7,6 @@ import RoomList from './components/RoomList';
 import SendMessageForm from './components/SendMessageForm';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-// import { threadId } from 'worker_threads';
 
 class App extends Component {
   constructor() {
@@ -22,16 +19,6 @@ class App extends Component {
       roomId: ''
     };
   }
-  // componentWillUpdate = (nextProps, nextState) => {
-  //   // const node = ReactDom.findDOMNode(this);
-  //   // console.log(node.scrollTop, node.clientHeight, node.scrollHeight);
-  //   const node = ReactDom.findDOMNode(this);
-  //   // this.shouldScrollDown =
-  //   //   node.scrollTop + node.clientHeight + 100 >= node.scrollHeight;
-  //   console.log('scrollTop', node.scrollTop);
-  //   console.log('clientHeight', node.clientHeight);
-  //   console.log('scrollHeight', node.scrollHeight);
-  // };
   componentDidMount = () => {
     const chatManager = new ChatManager({
       instanceLocator,
@@ -59,7 +46,6 @@ class App extends Component {
   };
   subscribeToRoom = roomId => {
     this.setState({ messages: [] });
-    // roomId = roomId.toString();
     if (roomId) {
       this.currentUser
         .subscribeToRoom({
@@ -96,37 +82,56 @@ class App extends Component {
       .createRoom({ name })
       .then(room => this.subscribeToRoom(room.id))
       .catch(new Error('something wrong with create new room'));
-    // console.log('room', room);
   };
 
   render() {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='col-4'>
-            <div style={{ backgroundColor: '#2295c05e', height: '280px' }}>
-              <RoomList
-                roomId={this.state.roomId}
-                subscribeToRoom={this.subscribeToRoom}
-                rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}
-              />
+      <React.Fragment>
+        <nav className='navbar navbar-light bg-light navbar-container'>
+          <h1 className='navbar-brand app-headline'> Chat App</h1>
+        </nav>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-4'>
+              <div style={{ backgroundColor: '#2295c05e', height: '280px' }}>
+                <RoomList
+                  roomId={this.state.roomId}
+                  subscribeToRoom={this.subscribeToRoom}
+                  rooms={[
+                    ...this.state.joinableRooms,
+                    ...this.state.joinedRooms
+                  ]}
+                />
+              </div>
+              <NewRoomForm createRoom={this.handleRoom} />
             </div>
-            <NewRoomForm createRoom={this.handleRoom} />
-          </div>
-          <div className='col-8'>
-            <div
-              style={{
-                backgroundColor: '#a097972e',
-                height: '280px',
-                overflow: 'auto'
-              }}
-            >
-              <MessageList messages={this.state.messages} />
+            <div className='col-8'>
+              <div
+                style={{
+                  backgroundColor: '#a097972e',
+                  height: '280px',
+                  overflow: 'auto'
+                  // display: 'unset'
+                }}
+              >
+                {!this.state.roomId ? (
+                  <div
+                    className='join-room-container'
+                    style={{ height: '280px' }}
+                  >
+                    <h2 className='join-room'>&larr; Join a room!</h2>
+                  </div>
+                ) : (
+                  <MessageList messages={this.state.messages} />
+                )}
+              </div>
+              {this.state.roomId && (
+                <SendMessageForm sendMessage={this.sendMessage} />
+              )}
             </div>
-            <SendMessageForm sendMessage={this.sendMessage} />
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

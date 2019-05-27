@@ -5,8 +5,6 @@ class NewRoomForm extends Component {
   };
   handleChange = e => {
     this.setState({ roomName: e.target.value });
-
-    // console.log('object');
   };
   handleSubmit = e => {
     e.preventDefault();
@@ -20,8 +18,9 @@ class NewRoomForm extends Component {
           <input
             type='text'
             onChange={this.handleChange}
-            placeholder='New Room Form...'
+            placeholder='New Room...'
             required
+            className='form-control'
             value={this.state.roomName}
           />
         </div>
